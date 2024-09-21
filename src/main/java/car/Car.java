@@ -1,3 +1,5 @@
+package car;
+
 public class Car {
     private final String carName;
     private int xCoordinate;
