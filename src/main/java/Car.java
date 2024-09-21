@@ -7,11 +7,13 @@ public class Car {
     private int xGridBounds;
     private int yGridBounds;
 
-    public Car(String carName, int xCoordinate, int yCoordinate, char direction) {
+    public Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds) {
         this.carName = carName;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.direction = direction;
+        this.xGridBounds = xGridBounds;
+        this.yGridBounds = yGridBounds;
     }
 
     public String getCarName() {
@@ -32,8 +34,20 @@ public class Car {
 
     public void moveCarForward() {
         // You need to move the car, ie change the position somehow
-        this.xCoordinate += 1;
-        this.yCoordinate += 1;
+        switch (direction) {
+            case 'N':
+                if (this.yCoordinate < this.yGridBounds) this.yCoordinate++;
+                break;
+            case 'E':
+                if (this.xCoordinate < this.xGridBounds) this.xCoordinate++;
+                break;
+            case 'S':
+                if (this.yCoordinate > 0) this.yCoordinate--;
+                break;
+            case 'W':
+                if (this.xCoordinate > 0) this.xCoordinate--;
+                break;
+        }
     }
 
     public void rotateCar(char command) {
