@@ -1,11 +1,11 @@
 public class Car {
-    private String carName;
+    private final String carName;
     private int xCoordinate;
     private int yCoordinate;
     private char direction;
 
-    private int xGridBounds;
-    private int yGridBounds;
+    private final int xGridBounds;
+    private final int yGridBounds;
 
     public Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds) {
         this.carName = carName;
@@ -51,6 +51,13 @@ public class Car {
     }
 
     public void rotateCar(char command) {
-        this.direction = 'S';
+        String directions = "NESW";
+        int idx = directions.indexOf(this.direction);
+        if (command == 'L') {
+            idx = (idx + 3) % 4;
+        } else {
+            idx = (idx + 1) % 4;
+        }
+        this.direction = directions.charAt(idx);
     }
 }
