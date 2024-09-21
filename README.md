@@ -54,6 +54,15 @@ Say if the command is something like this:
 "FFFFFLRFLRLF"
 ```
 
+### Negative Inputs or Out of bounds inputs
+If the program were to receive any inputs of the following kind:
+- Negative number inputs.
+- Out of bounds.
+
+Then the program will just ignore that car, but inform the user for sure.
+
+But it will log to the terminal that something is wrong.
+
 > Regardless of whether the command is `Move` or `Rotate`, each action will take one unit of time.
 
 # Design Choices
@@ -67,3 +76,8 @@ This class contains information about the car.
 ## Grid
 
 This is the class responsible for simulating the movement of the car.
+
+## Reading inputs
+Since there can be many inputs for many cars, I feel that the inputs should be read from a file
+instead of being typed onto the terminal. For this reason a `Parser` class would be built as well
+which will ensure that all the inputs provided by the 
