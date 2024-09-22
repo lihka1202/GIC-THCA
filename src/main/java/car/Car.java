@@ -1,5 +1,7 @@
 package car;
 
+import java.lang.reflect.Array;
+
 public class Car {
     private final String carName;
     private int xCoordinate;
@@ -8,15 +10,36 @@ public class Car {
 
     private final int xGridBounds;
     private final int yGridBounds;
+    private final char[] commands;
+    private int nextCommandIdx;
 
-    public Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds) {
+    private boolean commandComplete;
+
+
+    public Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds, char[] commands) {
         this.carName = carName;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
         this.direction = direction;
         this.xGridBounds = xGridBounds;
         this.yGridBounds = yGridBounds;
+        this.commands = commands;
+        this.nextCommandIdx = 0;
+        this.commandComplete = false;
     }
+
+    public Car() {
+        this.carName = "ErrorCar";
+        this.xCoordinate = -1;
+        this.yCoordinate = -1;
+        this.direction = 'X';
+        this.xGridBounds = -1;
+        this.yGridBounds = -1;
+        this.commands = new char[]{};
+        this.nextCommandIdx = -1;
+        this.commandComplete = true;
+    }
+
 
     public String getCarName() {
         return carName;
@@ -52,14 +75,35 @@ public class Car {
         }
     }
 
-    public void rotateCar(char command) {
+    public void rotateCar() {
         String directions = "NESW";
         int idx = directions.indexOf(this.direction);
-        if (command == 'L') {
+        if (this.commands[nextCommandIdx] == 'L') {
             idx = (idx + 3) % 4;
         } else {
             idx = (idx + 1) % 4;
         }
         this.direction = directions.charAt(idx);
+    }
+
+    public boolean isCommandComplete() {
+        return commandComplete;
+    }
+
+    public void move() {
+        if (this.nextCommandIdx < this.commands.length) {
+            // Do whatever by reading the command index here
+            if (this.commands[this.nextCommandIdx] == 'F') {
+                // move
+                this.moveCarForward();
+            } else {
+                // rotate
+                this.rotateCar();
+            }
+            this.nextCommandIdx += 1;
+        } else {
+            this.commandComplete = true;
+        }
+
     }
 }
