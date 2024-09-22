@@ -28,19 +28,6 @@ public class Car {
         this.commandComplete = false;
     }
 
-    public Car() {
-        this.carName = "ErrorCar";
-        this.xCoordinate = -1;
-        this.yCoordinate = -1;
-        this.direction = 'X';
-        this.xGridBounds = -1;
-        this.yGridBounds = -1;
-        this.commands = new char[]{};
-        this.nextCommandIdx = -1;
-        this.commandComplete = true;
-    }
-
-
     public String getCarName() {
         return carName;
     }
