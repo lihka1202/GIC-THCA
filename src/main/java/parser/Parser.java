@@ -15,6 +15,32 @@ public class Parser {
         this.filePath = filePath;
     }
 
+    // Helper method to validate the position and direction
+    private boolean isValidPositionAndDirection(int xCoord, int yCoord, char direction, int xGridBounds, int yGridBounds) {
+        if (xCoord < 0 || yCoord < 0) {
+            System.out.println("Coordinates of the car are negative, this is not accepted");
+            return false;
+        } else if (xCoord > xGridBounds || yCoord > yGridBounds) {
+            System.out.println("Coordinates of the car are outside bounds, this is not accepted");
+            return false;
+        } else if ("NESW".indexOf(direction) == -1) {
+            System.out.println("Direction is outside NESW, this is not accepted");
+            return false;
+        }
+        return true;
+    }
+
+    // Helper method to validate the command line
+    private boolean isValidCommandLine(char[] commandLine) {
+        for (char command : commandLine) {
+            if (command != 'F' && command != 'R' && command != 'L') {
+                System.out.println("Movement commands contain an unknown character, not accepted");
+                return false;
+            }
+        }
+        return true;
+    }
+
     private Car[] parseSingleCar(BufferedReader reader, String positionLine, int xGridBounds, int yGridBounds) {
         try {
             String[] firstLineInfo = positionLine.split(" ");
@@ -23,26 +49,15 @@ public class Parser {
             char direction = firstLineInfo[2].charAt(0);
 
             // Check if the coordinates are negative or if the direction is outside NESW
-            if (xCoord < 0 || yCoord < 0) {
-                System.out.println("Coordinates of the car are negative, this is not accepted");
-                return new Car[]{};
-            } else if (xCoord > xGridBounds || yCoord > yGridBounds) {
-                System.out.println("Coordinates of the car are outside bounds, this is not accepted");
-                return new Car[]{};
-            } else if ("NESW".indexOf(direction) == -1) {
-                // Direction is something else, not NESW
-                System.out.println("Direction is outside NESW, this is not accepted");
+            if (!isValidPositionAndDirection(xCoord, yCoord, direction, xGridBounds, yGridBounds)) {
                 return new Car[]{};
             }
 
             char[] commandLine = reader.readLine().toCharArray();
 
             // Check if the list of commands are valid
-            for (char command : commandLine) {
-                if (command != 'F' && command != 'R' && command != 'L') {
-                    System.out.println("Movement commands contain an unknown character, not accepted");
-                    return new Car[]{};
-                }
+            if (!isValidCommandLine(commandLine)) {
+                return new Car[]{};
             }
 
             // All the information is right, return a new car array
@@ -60,7 +75,7 @@ public class Parser {
             while (carLabelLine != null) {
                 // Move on from empty buffer in between
                 carLabelLine = reader.readLine();
-                // First, we read the car label (e.g., A, B, C, etc.)
+                // Read the name of the car
                 String carLabel = carLabelLine.trim();
 
                 // Now we expect the next line to be the position and direction of the car
@@ -71,15 +86,7 @@ public class Parser {
                 char direction = positionInfo[2].charAt(0);
 
                 // Check if the coordinates are negative or if the direction is outside NESW
-                if (xCoord < 0 || yCoord < 0) {
-                    System.out.println("Coordinates of the car are negative, this is not accepted");
-                    return new Car[]{};
-                } else if (xCoord > xGridBounds || yCoord > yGridBounds) {
-                    System.out.println("Coordinates of the car are outside bounds, this is not accepted");
-                    return new Car[]{};
-                } else if ("NESW".indexOf(direction) == -1) {
-                    // Direction is something else, not NESW
-                    System.out.println("Direction is outside NESW, this is not accepted");
+                if (!isValidPositionAndDirection(xCoord, yCoord, direction, xGridBounds, yGridBounds)) {
                     return new Car[]{};
                 }
 
@@ -87,11 +94,8 @@ public class Parser {
                 char[] commandLine = reader.readLine().toCharArray();
 
                 // Check if the list of commands is valid
-                for (char command : commandLine) {
-                    if (command != 'F' && command != 'R' && command != 'L') {
-                        System.out.println("Movement commands contain an unknown character, not accepted");
-                        return new Car[]{}; // returning empty array if invalid
-                    }
+                if (!isValidCommandLine(commandLine)) {
+                    return new Car[]{};
                 }
 
                 // If everything is valid, create a new car and add it to the list
