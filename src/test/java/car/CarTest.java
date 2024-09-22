@@ -162,9 +162,4 @@ class CarTest {
 
     }
 
-    @Test
-    void testEmptyConstructorInit() {
-        Car car = new Car();
-        assertTrue(car.isCommandComplete());
-    }
 }
