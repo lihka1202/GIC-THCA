@@ -11,7 +11,9 @@ public class Car {
     private final int xGridBounds;
     private final int yGridBounds;
     private final char[] commands;
-    private char nextCommand;
+    private int nextCommandIdx;
+
+    private boolean commandComplete;
 
 
     public Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds, char[] commands) {
@@ -22,7 +24,8 @@ public class Car {
         this.xGridBounds = xGridBounds;
         this.yGridBounds = yGridBounds;
         this.commands = commands;
-        this.nextCommand = commands[0];
+        this.nextCommandIdx = 0;
+        this.commandComplete = false;
     }
 
 
@@ -63,7 +66,7 @@ public class Car {
     public void rotateCar() {
         String directions = "NESW";
         int idx = directions.indexOf(this.direction);
-        if (this.nextCommand == 'L') {
+        if (this.commands[nextCommandIdx] == 'L') {
             idx = (idx + 3) % 4;
         } else {
             idx = (idx + 1) % 4;
@@ -71,7 +74,24 @@ public class Car {
         this.direction = directions.charAt(idx);
     }
 
+    public boolean isCommandComplete() {
+        return commandComplete;
+    }
+
     public void move() {
+        if (this.nextCommandIdx < this.commands.length) {
+            // Do whatever by reading the command index here
+            if (this.commands[this.nextCommandIdx] == 'F') {
+                // move
+                this.moveCarForward();
+            } else {
+                // rotate
+                this.rotateCar();
+            }
+            this.nextCommandIdx += 1;
+        } else {
+            this.commandComplete = true;
+        }
 
     }
 }
