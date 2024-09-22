@@ -1,5 +1,7 @@
 package car;
 
+import java.lang.reflect.Array;
+
 public class Car {
     private final String carName;
     private int xCoordinate;
@@ -8,9 +10,11 @@ public class Car {
 
     private final int xGridBounds;
     private final int yGridBounds;
-    private final String commands;
+    private final char[] commands;
+    private char nextCommand;
 
-    public Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds, String commands) {
+
+    public Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds, char[] commands) {
         this.carName = carName;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
@@ -18,11 +22,9 @@ public class Car {
         this.xGridBounds = xGridBounds;
         this.yGridBounds = yGridBounds;
         this.commands = commands;
+        this.nextCommand = commands[0];
     }
 
-    public String getCommands() {
-        return commands;
-    }
 
     public String getCarName() {
         return carName;
@@ -58,14 +60,18 @@ public class Car {
         }
     }
 
-    public void rotateCar(char command) {
+    public void rotateCar() {
         String directions = "NESW";
         int idx = directions.indexOf(this.direction);
-        if (command == 'L') {
+        if (this.nextCommand == 'L') {
             idx = (idx + 3) % 4;
         } else {
             idx = (idx + 1) % 4;
         }
         this.direction = directions.charAt(idx);
+    }
+
+    public void move() {
+
     }
 }
