@@ -1,0 +1,9 @@
+10 10
+
+A
+1 2 N
+FFRF
+
+B
+1 3 C
+FFRFFL
