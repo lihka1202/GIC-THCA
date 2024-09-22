@@ -21,23 +21,13 @@ class ParserTest {
         }
     }
 
-    @Test
-    void shouldCollectMultipleCarsFromFile() {
-        Parser parser = new Parser("src/test/java/parser/test-one.txt");
-        try {
-            Car[] listOfCars = parser.parseFile();
-            assertEquals(1, listOfCars.length);
-        } catch (IOException e) {
-            fail("File cannot be opened");
-        }
-    }
 
     @Test
     void shouldAvoidOneCarOutsideLeftmostBound() {
         Parser parser = new Parser("src/test/java/parser/test-one.txt");
         try {
             Car[] listOfCars = parser.parseFile();
-            assertEquals(1, listOfCars.length);
+            assertEquals(0, listOfCars.length);
         } catch (IOException e) {
             fail("File cannot be opened");
         }
@@ -59,7 +49,7 @@ class ParserTest {
         Parser parser = new Parser("src/test/java/parser/test-one.txt");
         try {
             Car[] listOfCars = parser.parseFile();
-            assertEquals(1, listOfCars.length);
+            assertEquals(0, listOfCars.length);
         } catch (IOException e) {
             fail("File cannot be opened");
         }
@@ -70,7 +60,7 @@ class ParserTest {
         Parser parser = new Parser("src/test/java/parser/test-one.txt");
         try {
             Car[] listOfCars = parser.parseFile();
-            assertEquals(1, listOfCars.length);
+            assertEquals(0, listOfCars.length);
         } catch (IOException e) {
             fail("File cannot be opened");
         }
@@ -78,10 +68,10 @@ class ParserTest {
 
     @Test
     void shouldAvoidCarWithNegativeXCoordinate() {
-        Parser parser = new Parser("src/test/java/parser/test-one.txt");
+        Parser parser = new Parser("src/test/java/parser/test-negativecoords.txt");
         try {
             Car[] listOfCars = parser.parseFile();
-            assertEquals(1, listOfCars.length);
+            assertEquals(0, listOfCars.length);
         } catch (IOException e) {
             fail("File cannot be opened");
         }
@@ -89,10 +79,10 @@ class ParserTest {
 
     @Test
     void shouldAvoidCarWithNegativeYCoordinate() {
-        Parser parser = new Parser("src/test/java/parser/test-one.txt");
+        Parser parser = new Parser("src/test/java/parser/test-negativecoords.txt");
         try {
             Car[] listOfCars = parser.parseFile();
-            assertEquals(1, listOfCars.length);
+            assertEquals(0, listOfCars.length);
         } catch (IOException e) {
             fail("File cannot be opened");
         }
@@ -163,4 +153,16 @@ class ParserTest {
             fail("File cannot be opened");
         }
     }
+
+    @Test
+    void shouldCollectMultipleCarsFromFile() {
+        Parser parser = new Parser("src/test/java/parser/test-one.txt");
+        try {
+            Car[] listOfCars = parser.parseFile();
+            assertEquals(1, listOfCars.length);
+        } catch (IOException e) {
+            fail("File cannot be opened");
+        }
+    }
+
 }
