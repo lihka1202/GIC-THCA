@@ -19,7 +19,7 @@ public class Parser {
             int xCoord = Integer.parseInt(firstLineInfo[0]);
             int yCoord = Integer.parseInt(firstLineInfo[1]);
             char direction = firstLineInfo[2].charAt(0);
-            String commandLine = reader.readLine();
+            char[] commandLine = reader.readLine().toCharArray();
             return new Car[]{new Car("SingelCar", xCoord, yCoord, direction, xGridBounds, yGridBounds, commandLine)};
         } catch (IOException e) {
             System.out.println("File structure is wrong");
