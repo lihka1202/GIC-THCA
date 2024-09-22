@@ -161,4 +161,10 @@ class CarTest {
         assertEquals('N', car.getDirection());
 
     }
+
+    @Test
+    void testEmptyConstructorInit() {
+        Car car = new Car();
+        assertTrue(car.isCommandComplete());
+    }
 }
