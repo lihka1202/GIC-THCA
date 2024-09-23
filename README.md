@@ -54,30 +54,78 @@ Say if the command is something like this:
 "FFFFFLRFLRLF"
 ```
 
-### Negative Inputs or Out of bounds inputs
-If the program were to receive any inputs of the following kind:
-- Negative number inputs.
-- Out of bounds.
-
-Then the program will just ignore that car, but inform the user for sure.
-
-But it will log to the terminal that something is wrong.
-
 > Regardless of whether the command is `Move` or `Rotate`, each action will take one unit of time.
+
+### Inaccurate inputs
+
+If the program were to receive any inputs of the following kind:
+
+- Negative number inputs.
+- Out of bound coordinates for the cars
+- Usage of a direction outside of `N`, `S`, `E`, `W`.
+- Usage of an action outside `F`, `L`, `R`.
+- Badly formatted inputs (missing lines etc.)
+
+Then the program will just ignore that file all together and inform the user.
+The error codes can be seen in [`Parser`](#parser).
 
 # Design Choices
 
-I intend to model the problem using the following classes in java
+I intend to model the problem using the following classes in java.
 
-## Car
+## Class `Car`
 
-This class contains information about the car.
+The `Car` class represents a car that moves on a grid. Below are details about the class and its methods:
+
+### Attributes:
+
+- `carName`: The name of the car (e.g., "A", "B", etc.).
+- `xCoordinate` & `yCoordinate`: The current position of the car on the grid.
+- `direction`: The current direction of the car (`N`, `E`, `S`, `W`).
+- `xGridBounds` & `yGridBounds`: The boundaries of the grid (i.e., the maximum x and y values the car can reach).
+- `commands`: A list of commands (`F`, `L`, `R`) that dictate how the car should move.
+- `nextCommandIdx`: Tracks the next command to be executed.
+- `commandComplete`: A boolean indicating whether the car has finished executing all commands.
+
+### Methods:
+
+- `Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds, char[] commands)`:
+  Constructor for initializing a new car with a name, position, direction, grid bounds, and a sequence of commands.
+- `getCarName()`: Returns the name of the car.
+- `getxCoordinate()`: Returns the current x-coordinate of the car.
+- `getyCoordinate()`: Returns the current y-coordinate of the car.
+- `getDirection()`: Returns the current direction of the car.
+- `moveCarForward()`: Moves the car forward in its current direction, respecting grid boundaries.
+- `rotateCar()`: Rotates the car either left or right based on the current command.
+- `isCommandComplete()`: Returns whether the car has completed all its commands.
+- `move()`: Executes the current command (either move forward or rotate) and advances to the next command in the
+  sequence.
+
+## Example
+
+Here's an example of how to instantiate and use a `Car` object:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        char[] commands = {'F', 'F', 'R', 'F', 'L', 'F'};
+        Car car = new Car("A", 1, 1, 'N', 10, 10, commands);
+
+        // Execute commands for the car
+        while (!car.isCommandComplete()) {
+            car.move();
+            System.out.println(car.getCarName() + " is at position (" + car.getxCoordinate() + ", " + car.getyCoordinate() + ") facing " + car.getDirection());
+        }
+    }
+}
+```
+
+## Parser
+
+Since there can be many inputs for many cars, I feel that the inputs should be read from a file
+instead of being typed onto the terminal. For this reason a `Parser` class is a good solution.
 
 ## Grid
 
 This is the class responsible for simulating the movement of the car.
 
-## Reading inputs
-Since there can be many inputs for many cars, I feel that the inputs should be read from a file
-instead of being typed onto the terminal. For this reason a `Parser` class would be built as well
-which will ensure that all the inputs provided by the 
