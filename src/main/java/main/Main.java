@@ -1,3 +1,5 @@
+package main;
+
 import grid.Grid;
 import parser.Parser;
 
