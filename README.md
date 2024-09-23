@@ -14,18 +14,18 @@ are equally concise.
   - [Attributes](#attributes)
   - [Actions](#actions)
 - [List of Assumptions made](#list-of-assumptions-made)
-  - [Rotate and Move commands are on the same level](#rotate-and-move-commands-are-on-the-same-level)
+  - [Rotate and Move commands are on the same level](#rotate-and-move-are-commands-on-the-same-level-and-take-the-same-amount-of-time)
   - [Inaccurate inputs](#inaccurate-inputs)
-  - [Multiple collisions can happen at the same point](#multiple-collisions-can-happen-at-the-same-point)
+  - [Multiple collisions can happen at the same point](#at-a-single-point-multiple-collisions-can-happen)
 - [Design Choices](#design-choices)
 - [Class `Car`](#class-car)
-  - [Attributes](#attributes-1)
-  - [Methods](#methods)
-  - [Example](#example)
+  - [Attributes](#car-attributes)
+  - [Methods](#car-methods)
+  - [Example](#car-example)
 - [Class `Parser`](#class-parser)
-  - [Attributes](#attributes-2)
-  - [Constructor](#constructor)
-  - [Methods](#methods-1)
+  - [Attributes](#parser-attributes)
+  - [Constructor](#parser-constructor)
+  - [Methods](#parser-methods)
     - [`Car[] parseFile()`](#car-parsefile)
     - [`Car[] parseSingleCar(BufferedReader reader, String positionLine, int xGridBounds, int yGridBounds)`](#car-parsesinglecarbufferedreader-reader-string-positionline-int-xgridbounds-int-ygridbounds)
     - [`Car[] parseMultiCar(BufferedReader reader, String carLabelLine, int xGridBounds, int yGridBounds)`](#car-parsemulticarbufferedreader-reader-string-carlabelline-int-xgridbounds-int-ygridbounds)
@@ -34,12 +34,12 @@ are equally concise.
   - [Input File Structure](#input-file-structure)
   - [Example Usage](#example-usage)
 - [Class `Grid`](#class-grid)
-  - [Attributes](#attributes-3)
-  - [Constructor](#constructor-1)
-  - [Methods](#methods-2)
+  - [Attributes](#grid-attributes)
+  - [Constructor](#grid-constructor)
+  - [Methods](#grid-methods)
     - [`void simulate()`](#void-simulate)
     - [`boolean areAllCommandsComplete()`](#boolean-areallcommandscomplete)
-  - [Example Usage](#example-usage-1)
+  - [Example Usage](#grid-example-usage)
 - [Unit Testing: `CarTest`](#unit-testing-cartest)
   - [Test Methods](#test-methods)
     - [`void carShouldMoveLeftByOneUnit()`](#void-carshouldmoveleftbyoneunit)
@@ -64,7 +64,7 @@ are equally concise.
     - [`String captureOutputDuringParsing(Parser parser)`](#string-captureoutputduringparsingparser-parser)
     - [`void assertCarCountFromFile(String filePath, int expectedCount)`](#void-assertcarcountfromfilestring-filepath-int-expectedcount)
     - [`void assertCarParseWithErrorMessage(String filePath, String expectedMessage)`](#void-assertcarparsewitherrormessagestring-filepath-string-expectedmessage)
-  - [Test Methods](#test-methods-1)
+  - [Test Methods](#parsertest-test-methods)
     - [`void shouldCollectOneCarFromFile()`](#void-shouldcollectonecarfromfile)
     - [`void shouldCollectMultipleCarsFromFile()`](#void-shouldcollectmultiplecarsfromfile)
     - [`void shouldAvoidOneCarOutsideRightmostBoundFromSingleCarParse()`](#void-shouldavoidoncaroutsiderightmostboundfromsinglecarparse)
@@ -83,9 +83,9 @@ are equally concise.
     - [`void shouldAvoidMultiCarWithWrongFileStructure()`](#void-shouldavoidmulticarwithwrongfilestructure)
     - [`void shouldReachRelevantPosition()`](#void-shouldreachrelevantposition)
 - [Unit Testing: `GridTest`](#unit-testing-gridtest)
-  - [Helper Methods](#helper-methods-1)
+  - [Helper Methods](#gridtest-helper-methods)
     - [`String simulateAndCaptureOutput(String filePath)`](#string-simulateandcaptureoutputstring-filepath)
-  - [Test Methods](#test-methods-2)
+  - [Test Methods](#gridtest-test-methods)
     - [`void noSimulationShouldBeRun()`](#void-nosimulationshouldberun)
     - [`void singleCarShouldReachRightDestination()`](#void-singlecarshouldreachrightdestination)
     - [`void twoCarsShouldCollide()`](#void-twocarsshouldcollide)
@@ -175,7 +175,7 @@ I intend to model the problem using the following classes in java.
 
 The `Car` class represents a car that moves on a grid. Below are details about the class and its methods:
 
-### Attributes:
+### Car Attributes:
 
 - `carName`: The name of the car (e.g., "A", "B", etc.).
 - `xCoordinate` & `yCoordinate`: The current position of the car on the grid.
@@ -185,7 +185,7 @@ The `Car` class represents a car that moves on a grid. Below are details about t
 - `nextCommandIdx`: Tracks the next command to be executed.
 - `commandComplete`: A boolean indicating whether the car has finished executing all commands.
 
-### Methods:
+### Car Methods:
 
 - `Car(String carName, int xCoordinate, int yCoordinate, char direction, int xGridBounds, int yGridBounds, char[] commands)`:
   Constructor for initializing a new car with a name, position, direction, grid bounds, and a sequence of commands.
@@ -199,7 +199,7 @@ The `Car` class represents a car that moves on a grid. Below are details about t
 - `move()`: Executes the current command (either move forward or rotate) and advances to the next command in the
   sequence.
 
-## Example
+## Car Example
 
 Here's an example of how to instantiate and use a `Car` object:
 
@@ -224,16 +224,16 @@ The `Parser` class is responsible for reading car configuration data from a file
 parsed input. It supports parsing both single-car and multi-car input formats, validating car positions, directions, and
 movement commands, and returning the list of `Car` objects for further simulation.
 
-### Attributes:
+### Parser Attributes:
 
 - **`filePath`**: A `String` representing the path to the input file containing the grid and car data.
 
-### Constructor:
+### Parser Constructor:
 
 - **`Parser(String filePath)`**: Initializes the parser with the given path to the input file containing car data (
   positions, directions, and commands).
 
-### Methods:
+### Parser Methods:
 
 #### `Car[] parseFile()`
 
@@ -332,16 +332,16 @@ The `Grid` class manages the simulation of multiple cars moving on a grid. It ha
 to their commands and checks for collisions when multiple cars occupy the same position on the grid. The class supports
 both single-car and multi-car simulations.
 
-### Attributes:
+### Grid Attributes:
 
 - **`listOfCarsToMove`**: An array of `Car` objects that will be simulated within the grid.
 
-### Constructor:
+### Grid Constructor:
 
 - **`Grid(Car[] listOfCarsToMove)`**: Initializes the grid with the provided list of cars to simulate. Each car has
   predefined commands for movement.
 
-### Methods:
+### Grid Methods:
 
 #### `void simulate()`
 
@@ -369,7 +369,7 @@ both single-car and multi-car simulations.
 - **Description**: Helper method that checks if all cars have completed their commands.
 - **Returns**: `true` if all cars have completed their commands, `false` otherwise.
 
-### Example Usage:
+### Grid Example Usage:
 
 ```java
 public class Main {
@@ -504,7 +504,7 @@ structures) are properly caught and handled.
     - `filePath`: Path to the input file.
     - `expectedMessage`: The error message expected to appear in the console output.
 
-### Test Methods
+### ParserTest Test Methods
 
 #### `void shouldCollectOneCarFromFile()`
 
@@ -620,7 +620,7 @@ structures) are properly caught and handled.
 The `GridTest` class contains unit tests that validate the behavior of the `Grid` class. These tests ensure that the car
 movement simulation, as well as collision detection, is handled correctly.
 
-### Helper Methods
+### GridTest Helper Methods
 
 #### `String simulateAndCaptureOutput(String filePath)`
 
@@ -632,7 +632,7 @@ movement simulation, as well as collision detection, is handled correctly.
 
 ---
 
-### Test Methods
+### GridTest Test Methods
 
 #### `void noSimulationShouldBeRun()`
 
