@@ -1,6 +1,5 @@
 package car;
 
-import java.lang.reflect.Array;
 
 public class Car {
     private final String carName;
